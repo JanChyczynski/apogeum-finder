@@ -1,4 +1,4 @@
-
+#include "params.h"
 
 
 class Apogeum_finder
@@ -13,7 +13,7 @@ class Apogeum_finder
     curr_alt = altitude;
   }
 
-  bool reached_apogeum()
+  bool get_reached_apogeum()
   {
     return reached_apogeum;
   }
