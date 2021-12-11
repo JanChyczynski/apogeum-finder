@@ -23,6 +23,11 @@ struct Cyclic_que
         head = (head+1)%N;
         arr[head] = val;
     }
+
+    my_size_t size()
+    {
+        return N;
+    }
 };
 
 #endif //SPIEJS_SYSTIEMO_CYCLIC_QUE_H

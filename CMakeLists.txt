@@ -14,4 +14,4 @@ add_executable(stdio_apg_find
 add_executable(cyclic_que_test
         spiejs_systiemo/apogeum_finder.h
         spiejs_systiemo/params.h
-        spiejs_systiemo/cyclic_que.h cyclic_tab_test.cpp)
+        spiejs_systiemo/cyclic_que.h cyclic_tab_test.cpp spiejs_systiemo/noise_filter.h)
