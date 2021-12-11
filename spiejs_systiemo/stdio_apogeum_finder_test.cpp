@@ -17,10 +17,11 @@ int main()
     {
         altitude_t alt;
         my_time_t time;
-        cin >> alt >> time;
+        cin  >> time >> alt;
         apg_finder.insertAltitude(alt);
         if(!found && apg_finder.get_reached_apogeum())
         {
+            cout << "apg_found: time: " << time << " alt: " << alt << endl;
             found_apg_time = time;
             found = true;
         }
