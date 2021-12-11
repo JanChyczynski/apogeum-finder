@@ -1,6 +1,7 @@
 #include <iostream>
 #include "apogeum_finder.h"
 #include "params.h"
+#include "noise_filter.h"
 
 
 using namespace std;
@@ -8,6 +9,7 @@ using namespace std;
 int main()
 {
     Apogeum_finder apg_finder;
+    Noise_filter filter;
 
     int in_size = 0;
     my_time_t in_apg_time, found_apg_time = -1;
@@ -18,7 +20,8 @@ int main()
         altitude_t alt;
         my_time_t time;
         cin  >> time >> alt;
-        apg_finder.insertAltitude(alt);
+        apg_finder.insertAltitude(filter.new_sample(alt));
+        cout << "curr filtered alt: " << filter.get_value() << endl;
         if(!found && apg_finder.get_reached_apogeum())
         {
             cout << "apg_found: time: " << time << " alt: " << alt << endl;
