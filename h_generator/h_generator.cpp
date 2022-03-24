@@ -1,61 +1,60 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-double maks = 0;
-int outlier_chance = 0;
-double wsp_chaosu = 1.5;
-double wsp_outliera = 3;
 
-int ile_danych(double v, double g)
-{
-    for (double t = 0; t < 1000; t += 0.1)
-    {
+double maks = 0;
+//example data:
+double v = 100.0; //initial velocity
+double g = 10.0;//gravity force
+int outlier_chance = 0;//from 0 to 100
+double chaos_coef = 0.05;//from 0 to 1
+double outlier_coef = 3;//how much you like, but above 5 is crazy
+
+int get_data_amount(double v, double g) {
+    for (double t = 0; t < 1000; t += 0.1) {
         double h = v * t - g * t * t / 2;
         maks = max(maks, h);
-        if (h < 0)
-        {
+        if (h < 0) {
             return t * 10;
         }
     }
-    cout << "o kurwa";
+    throw "rocket never goes below zero";
     return -1;
 }
 
-double outlier(double h)
-{
-    if (rand() % 100 < outlier_chance)
-    {
-        if (rand() % 2)
-        {
-            return h * wsp_outliera;
-        } else
-        {
-            return h / wsp_outliera;
-        }
+double outlier(double h) {
+    if (rand() % 100 >= outlier_chance) {
+        return h;
     }
-    return h;
+
+    if (rand() % 2) {
+        return h * outlier_coef;
+    }
+
+    return h / outlier_coef;
+}
+
+double getRandomDouble(double min, double max) {
+    return ((double) rand() / RAND_MAX) * (max - min) + min;
+}
+
+double apply_chaos(double data) {
+    data *= getRandomDouble(1.0 - chaos_coef, 1.0 + chaos_coef);
+    return outlier(data);
 }
 
 
-int main()
-{
-    double v, g;//przyspieszenie, tlumienie
-    cin >> v >> g >> wsp_chaosu >> outlier_chance >> wsp_outliera;
-    cout << ile_danych(v, g) << " " << v * v / (2 * g) << endl;
-    srand(v * 97 + g * 37 + wsp_chaosu * 7 + outlier_chance * 11 + wsp_outliera * 23);
-    //cout << ile_danych(v,g)<<" ";
-    //cout << maks<<endl;
-    double h_past = 0;
-    for (double t = 0; t < 1000; t += 0.1)
-    {
+int main() {
+    cin >> v >> g >> chaos_coef >> outlier_chance >> outlier_coef;
+    cout << get_data_amount(v, g) << " " << v * v / (2 * g) << endl;
+    srand(v * 97 + g * 37 + chaos_coef * 7 + outlier_chance * 11 + outlier_coef * 23);
+    for (double t = 0; t < 1000; t += 0.1) {
         double h = v * t - g * t * t / 2;
-        if (h < 0)
-        {
+        if (h < 0) {
             break;
         }
         cout << setprecision(2) << fixed << t << "\t"
-             << outlier(h + rand() % (max(0, (int) (wsp_chaosu * (h_past - h))) + 1)) << endl;
-        h_past = h;
+             << apply_chaos(h) << endl;
     }
 
 }
